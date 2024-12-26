@@ -4,8 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47d4854f9604e066b8158b2273524e6a",
+    "content-hash": "e18083d0b0d7620105aa200dda6286ef",
     "packages": [
+        {
+            "name": "annexare/countries-list",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/annexare/Countries.git",
+                "reference": "cc382a4045cc7ca1ecd4c479de402dee1ba28929"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/annexare/Countries/zipball/cc382a4045cc7ca1ecd4c479de402dee1ba28929",
+                "reference": "cc382a4045cc7ca1ecd4c479de402dee1ba28929",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "dist/index.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmytro Klymenko",
+                    "email": "d@klmn.me",
+                    "homepage": "https://github.com/dmythro"
+                }
+            ],
+            "description": "Continents & countries: ISO 3166-1 alpha-2 code, name, ISO 639-1 languages, capital, currency, native name, phone. JSON, CSV and SQL.",
+            "homepage": "http://annexare.github.io/Countries/",
+            "keywords": [
+                "ISO 3166-1",
+                "ISO 639-1",
+                "capital",
+                "continent",
+                "countries",
+                "country",
+                "csv",
+                "currency",
+                "data",
+                "emoji",
+                "json",
+                "languages",
+                "sql"
+            ],
+            "support": {
+                "issues": "https://github.com/annexare/Countries/issues",
+                "source": "https://github.com/annexare/Countries"
+            },
+            "time": "2024-07-31T10:54:41+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.12.1",
@@ -5783,6 +5837,52 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "umpirsky/country-list",
+            "version": "2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/umpirsky/country-list.git",
+                "reference": "6dddae6983c1bc4d314b513c5decb7c8c6c879dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/umpirsky/country-list/zipball/6dddae6983c1bc4d314b513c5decb7c8c6c879dc",
+                "reference": "6dddae6983c1bc4d314b513c5decb7c8c6c879dc",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "slowprog/composer-copy-file": "^0.2",
+                "symfony/intl": "^4.3",
+                "umpirsky/list-generator": "^1.2"
+            },
+            "type": "library",
+            "extra": {
+                "copy-file": {
+                    "vendor/umpirsky/list-generator/Dockerfile": "./",
+                    "vendor/umpirsky/list-generator/docker-compose.yml": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Saša Stamenković",
+                    "email": "umpirsky@gmail.com"
+                }
+            ],
+            "description": "List of all countries with names and ISO 3166-1 codes in all languages and data formats.",
+            "support": {
+                "issues": "https://github.com/umpirsky/country-list/issues",
+                "source": "https://github.com/umpirsky/country-list/tree/2.0.6"
+            },
+            "time": "2020-12-03T10:09:09+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

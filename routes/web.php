@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', \App\Http\Controllers\ShowHomeController::class);
+Route::get('/', \App\Http\Controllers\HomeController::class);

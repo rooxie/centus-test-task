@@ -9,6 +9,8 @@ use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 
 /**
+ * User
+ *
  * @property int $id
  * @property string $name
  * @property string $email
