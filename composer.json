@@ -8,7 +8,8 @@
         "laravel/framework": "^11.9",
         "laravel/horizon": "^5.30",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "rakibdevs/openweather-laravel-api": "^1.9"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.2",
