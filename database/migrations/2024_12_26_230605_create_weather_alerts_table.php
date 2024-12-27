@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('location', 1000);
             $table->tinyInteger('pecepitation')->unsigned();
             $table->tinyInteger('uv')->unsigned();
+            $table->dateTime('executed_at')->nullable();
             $table->timestamps();
         });
     }

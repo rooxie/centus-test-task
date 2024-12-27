@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereUv($value)
  * @property int $id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereId($value)
+ * @property string|null $executed_at
+ * @property string|null $executed_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereExecutedAt($value)
  * @mixin \Eloquent
  */
 class WeatherAlert extends Model

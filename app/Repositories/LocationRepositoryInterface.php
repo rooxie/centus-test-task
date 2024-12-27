@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Country;
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Collection;
 
-interface CountryRepositoryInterface
+interface LocationRepositoryInterface
 {
     /**
-     * @return Collection<Country>
+     * @return Collection<Location>
      */
     public function all(): Collection;
 }
