@@ -184,7 +184,6 @@ return [
             'connection' => 'redis',
             'queue' => [
                 'default',
-                'youtube:channel:import',
             ],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',

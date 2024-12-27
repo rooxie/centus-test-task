@@ -65,6 +65,10 @@
             "vendor/bin/phpcs --standard=PSR12 --colors app/",
             "vendor/bin/phpcs --standard=PSR12 --colors routes/",
             "vendor/bin/phpcs --standard=PSR12 --colors database/"
+        ],
+        "reinitialize": [
+            "@php artisan cache:clear --ansi",
+            "@php artisan migrate:fresh --seed --ansi"
         ]
     },
     "extra": {
