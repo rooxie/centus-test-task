@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $channel
  * @property string $identifier
  * @property string $location
- * @property int $pecepitation
+ * @property int $precipitation
  * @property int $uv
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -27,8 +27,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereId($value)
  * @property string|null $executed_at
- * @property string|null $executed_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereExecutedAt($value)
+ * @property string $channel_type
+ * @property string $channel_identifier
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereChannelIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereChannelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert wherePrecipitation($value)
  * @mixin \Eloquent
  */
 class WeatherAlert extends Model

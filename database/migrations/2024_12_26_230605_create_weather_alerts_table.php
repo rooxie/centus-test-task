@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('weather_alerts', function (Blueprint $table) {
             $table->id();
-            $table->enum('channel', ['email', 'webpush']);
-            $table->string('identifier');
-            $table->string('location', 1000);
-            $table->tinyInteger('pecepitation')->unsigned();
+            $table->integer('location')->references('id')->on('locations');
+            $table->enum('channel_type', ['email', 'webpush']);
+            $table->string('channel_identifier');
+            $table->tinyInteger('precipitation')->unsigned();
             $table->tinyInteger('uv')->unsigned();
             $table->dateTime('executed_at')->nullable();
             $table->timestamps();

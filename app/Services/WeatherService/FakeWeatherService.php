@@ -13,7 +13,7 @@ class FakeWeatherService implements WeatherServiceAdapterInterface
         return new WeatherReport(
             location: $location,
             temperature: rand(-2, 35),
-            perciptation: rand(0, 100),
+            precipitation: rand(0, 100),
             uv: rand(0, 14)
         );
     }

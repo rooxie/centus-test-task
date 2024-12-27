@@ -15,21 +15,21 @@ class WeatherReport
     /**
      * @param string $location
      * @param float $temperature
-     * @param int $perciptation
+     * @param int $precipitation
      * @param int $uv
      */
     public function __construct(
         protected string $location,
         protected float $temperature,
-        protected int $perciptation,
+        protected int $precipitation,
         protected int $uv
     ) {
         if (trim($this->location) === '') {
             throw new InvalidArgumentException('Location cannot be empty');
         }
 
-        if ($this->perciptation < 0 || $this->perciptation > 100) {
-            throw new InvalidArgumentException('Percipientation must be between 0 and 100');
+        if ($this->precipitation < 0 || $this->precipitation > 100) {
+            throw new InvalidArgumentException('Precipitation must be between 0 and 100');
         }
 
         if ($this->uv < 0 || $this->uv > 100) {
@@ -66,9 +66,9 @@ class WeatherReport
     /**
      * @return int
      */
-    public function getPerciptation(): int
+    public function getPrecipitation(): int
     {
-        return $this->perciptation;
+        return $this->precipitation;
     }
 
     /**

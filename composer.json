@@ -58,8 +58,9 @@
         "ide-helper": [
             "@php artisan clear-compiled",
             "@php artisan ide-helper:eloquent",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
+            "@php artisan ide-helper:generate -H",
+            "@php artisan ide-helper:meta",
+            "@php artisan ide-helper:models -W"
         ],
         "phpcsh": [
             "vendor/bin/phpcs --standard=PSR12 --colors app/",

@@ -30,7 +30,7 @@ class ProcessWeatherAlert implements ShouldQueue, ShouldBeUnique
         $weatherReport = $weatherService->getWeather($this->weatherAlert->location);
 
         if (
-            $weatherReport->getPerciptation() >= $this->weatherAlert->percipitation
+            $weatherReport->getPrecipitation() >= $this->weatherAlert->percipitation
             ||
             $weatherReport->getUv() >= $this->weatherAlert->uv
         ) {
