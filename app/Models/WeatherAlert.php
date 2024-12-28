@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * WeatherAlert
@@ -33,9 +34,41 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereChannelIdentifier($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereChannelType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert wherePrecipitation($value)
+ * @property int $location_id
+ * @property int $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereLocationId($value)
  * @mixin \Eloquent
  */
 class WeatherAlert extends Model
 {
-    //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'location_id',
+        'channel_type',
+        'channel_identifier',
+        'precipitation',
+        'uv',
+    ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 }

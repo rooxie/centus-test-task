@@ -11,6 +11,10 @@
                 <div class="mt-8">
                     @livewire('subscribe-form')
                 </div>
+                <hr class="m-4">
+                <div class="mt-8">
+                    @livewire('weather-alerts')
+                </div>
             </div>
         </div>
     </div>

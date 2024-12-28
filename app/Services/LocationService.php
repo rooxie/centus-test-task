@@ -27,7 +27,7 @@ class LocationService
             return $locations;
         }
 
-        $locations = $this->locationRepository->all();
+        $locations = $this->locationRepository->all()->sortBy('name');
         Cache::set('locations', $locations);
 
         return $locations;
