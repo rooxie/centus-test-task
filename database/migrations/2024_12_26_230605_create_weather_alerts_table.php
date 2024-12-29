@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('weather_alerts', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('location_id')->references('id')->on('locations')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('location_id');
             $table->enum('channel_type', ['email', 'webpush']);
             $table->tinyInteger('precipitation')->unsigned();
             $table->tinyInteger('uv')->unsigned();
             $table->boolean('is_active')->default(true);
             $table->dateTime('executed_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
     }
 

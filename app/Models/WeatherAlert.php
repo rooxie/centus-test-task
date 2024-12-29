@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
+use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\PushSubscription;
 
 /**
  * WeatherAlert
  *
  * @property string $channel
  * @property string $identifier
- * @property string $location
+ * @property Location $location
  * @property int $precipitation
  * @property int $uv
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -27,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereUv($value)
  * @property int $id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereId($value)
- * @property string|null $executed_at
+ * @property \Illuminate\Support\Carbon|null $executed_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereExecutedAt($value)
  * @property string $channel_type
  * @property string $channel_identifier
@@ -38,10 +42,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $is_active
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereLocationId($value)
+ * @property int $user_id
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereUserId($value)
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
  * @mixin \Eloquent
  */
 class WeatherAlert extends Model
 {
+    use Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,10 +62,28 @@ class WeatherAlert extends Model
         'user_id',
         'location_id',
         'channel_type',
-        'channel_identifier',
         'precipitation',
         'uv',
+        'is_active',
+        'executed_at',
     ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'executed_at' => 'datetime',
+    ];
+
+    /**
+     * @return mixed
+     */
+    public function routeNotificationForWebPush()
+    {
+        return PushSubscription::findByUserID($this->user_id);
+    }
 
     /**
      * @return BelongsTo
@@ -70,5 +99,10 @@ class WeatherAlert extends Model
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class, 'location_id');
+    }
+
+    public function getFirstSetAlertValue(): int
+    {
+        return $this->precipitation ?: $this->uv;
     }
 }

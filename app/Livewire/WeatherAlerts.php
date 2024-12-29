@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\WeatherAlert;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,7 +23,7 @@ class WeatherAlerts extends Component
     protected string $paginationTheme = 'tailwind';
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $listeners = ['weatherAlertCreated' => '$refresh'];
 
@@ -37,7 +38,10 @@ class WeatherAlerts extends Component
         session()->flash('message', 'Record deleted successfully.');
     }
 
-    public function render()
+    /**
+     * @return View
+     */
+    public function render(): View
     {
         $weatherAlerts = WeatherAlert::query()
             ->where(['user_id' => Auth::id()])

@@ -4,18 +4,25 @@ namespace App\Livewire;
 
 use App\Models\WeatherAlert;
 use App\Services\LocationService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Psr\SimpleCache\InvalidArgumentException as SimpleCacheInvalidArgumentException;
 
 class SubscribeForm extends Component
 {
-    public $selected_location_id = null;
-    public $locations = [];
-    public $notification_method = 'email';
-    public $precipitation = 0;
-    public $uv = 0;
+    public ?int $selected_location_id = null;
+    public ?Collection $locations = null;
+    public string $notification_method = 'email';
+    public int $precipitation = 0;
+    public int $uv = 0;
 
-    // Validation rules
+    /**
+     * Subscription rules.
+     *
+     * @var array<string, array<string>
+     */
     protected $rules = [
         'selected_location_id' => [
             'required',
@@ -39,11 +46,23 @@ class SubscribeForm extends Component
         ],
     ];
 
+    /**
+     * Mount the component.
+     *
+     * @param LocationService $locationService
+     * @return void
+     * @throws SimpleCacheInvalidArgumentException
+     */
     public function mount(LocationService $locationService): void
     {
         $this->locations = $locationService->getAll();
     }
 
+    /**
+     * Subscribe to weather alerts.
+     *
+     * @return void
+     */
     public function subscribe(): void
     {
         $validatedData = $this->validate();
@@ -57,8 +76,8 @@ class SubscribeForm extends Component
             'user_id' => Auth::id(),
             'location_id' => $validatedData['selected_location_id'],
             'channel_type' => $validatedData['notification_method'],
-            'precipitation' => fake()->numberBetween(0, 100),
-            'uv' => fake()->numberBetween(0, 14),
+            'precipitation' => $validatedData['precipitation'],
+            'uv' => $validatedData['uv'],
             'is_active' => true,
         ]);
 
@@ -69,7 +88,10 @@ class SubscribeForm extends Component
         $this->dispatch('weatherAlertCreated');
     }
 
-    public function render()
+    /**
+     * @return View
+     */
+    public function render(): View
     {
         return view('livewire.subscribe-form');
     }

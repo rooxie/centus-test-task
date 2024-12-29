@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
-class HomeController extends Controller
+class HomeController
 {
     /**
      * Handle the incoming request.
+     *
+     * @return View
      */
-    public function __invoke(Request $request)
+    public function __invoke(): View
     {
         return view('home');
     }

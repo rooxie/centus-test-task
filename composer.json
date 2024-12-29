@@ -6,6 +6,7 @@
     "require": {
         "php": "^8.3",
         "annexare/countries-list": "^3.1",
+        "laravel-notification-channels/webpush": "^9.0",
         "laravel/framework": "^11.9",
         "laravel/horizon": "^5.30",
         "laravel/jetstream": "^5.3",
@@ -72,6 +73,11 @@
         "reinitialize": [
             "@php artisan cache:clear --ansi",
             "@php artisan migrate:fresh --seed --ansi"
+        ],
+        "cache": [
+            "@php artisan cache:clear --ansi",
+            "@php artisan view:clear --ansi",
+            "@php artisan view:cache --ansi"
         ]
     },
     "extra": {

@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Jobs\ProcessWeatherAlert;
-use App\Mail\WeatherAlertMail;
 use App\Models\WeatherAlert;
+use App\Notifications\WeatherConditionsMatched;
+use App\Services\WeatherService\WeatherServiceAdapterInterface;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 class ProcessWeatherAlertsCommand extends Command
 {
@@ -27,8 +27,16 @@ class ProcessWeatherAlertsCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(WeatherServiceAdapterInterface $weatherService)
     {
+        $weatherAlert = WeatherAlert::query()->find(3);
+        $user = $weatherAlert->user;
+        $user->notify(new WeatherConditionsMatched(
+            $weatherAlert,
+            $weatherService->getWeather($weatherAlert->location)
+        ));
+
+        dd('stop');
         $interval = (int)$this->option('interval');
 
         $this->info("Start processing weather alerts every {$interval} seconds.");

@@ -42,7 +42,7 @@ class WeatherAlertMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.weatherAlert',
+            view: 'emails.weather-alert',
             with: [
                 'weatherAlert' => $this->weatherAlert,
                 'weatherReport' => $this->weatherReport,
