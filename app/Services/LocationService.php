@@ -32,4 +32,16 @@ class LocationService
 
         return $locations;
     }
+
+    /**
+     * @param string $name
+     * @return Location|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function findByName(string $name): ?Location
+    {
+        return $this->getAll()->first(function (Location $location) use ($name) {
+            return trim(strtolower($location->name)) === trim(strtolower($name));
+        });
+    }
 }

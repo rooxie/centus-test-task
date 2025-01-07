@@ -3,13 +3,12 @@
 namespace App\Notifications;
 
 use App\Models\WeatherAlert;
-use App\Services\WeatherService\WeatherReport;
+use App\Services\RemoteWeatherService\WeatherReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
@@ -35,7 +34,7 @@ class WeatherConditionsMatched extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        if ($this->weatherAlert->channel_type === 'webpush') {
+        if ($this->weatherAlert->isWebpush()) {
             return [WebPushChannel::class];
         }
 
@@ -48,7 +47,7 @@ class WeatherConditionsMatched extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Weather Alert')
+            ->subject("Weather Alert in {$this->weatherAlert->location->name}")
             ->markdown('emails.weather-alert', [
                 'weatherAlert' => $this->weatherAlert,
                 'weatherReport' => $this->weatherReport,
@@ -64,9 +63,9 @@ class WeatherConditionsMatched extends Notification implements ShouldQueue
     {
         $title = "Weather Alert in {$this->weatherAlert->location->name}";
         $message = sprintf(
-            'Precipitation: %d, UV: %d',
-            $this->weatherAlert->precipitation,
-            $this->weatherAlert->uv
+            '%s >= %d',
+            strtoupper($this->weatherAlert->metric),
+            $this->weatherAlert->threshold
         );
 
         return (new WebPushMessage)

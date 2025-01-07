@@ -2,23 +2,15 @@
 
 namespace App\Models;
 
+use App\Services\RemoteWeatherService\WeatherReport;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
-use Illuminate\Notifications\Notifiable;
-use NotificationChannels\WebPush\PushSubscription;
 
 /**
  * WeatherAlert
  *
- * @property string $channel
- * @property string $identifier
- * @property Location $location
- * @property int $precipitation
- * @property int $uv
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert query()
@@ -33,8 +25,6 @@ use NotificationChannels\WebPush\PushSubscription;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereId($value)
  * @property \Illuminate\Support\Carbon|null $executed_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereExecutedAt($value)
- * @property string $channel_type
- * @property string $channel_identifier
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereChannelIdentifier($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereChannelType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert wherePrecipitation($value)
@@ -47,11 +37,20 @@ use NotificationChannels\WebPush\PushSubscription;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereUserId($value)
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property string $metric
+ * @property int $threshold
+ * @property int $enabled
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereMetric($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WeatherAlert whereThreshold($value)
+ * @property string $channel
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Location $location
  * @mixin \Eloquent
  */
 class WeatherAlert extends Model
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -61,10 +60,10 @@ class WeatherAlert extends Model
     protected $fillable = [
         'user_id',
         'location_id',
-        'channel_type',
-        'precipitation',
-        'uv',
-        'is_active',
+        'channel',
+        'metric',
+        'threshold',
+        'enabled',
         'executed_at',
     ];
 
@@ -76,14 +75,6 @@ class WeatherAlert extends Model
     protected $casts = [
         'executed_at' => 'datetime',
     ];
-
-    /**
-     * @return mixed
-     */
-    public function routeNotificationForWebPush()
-    {
-        return PushSubscription::findByUserID($this->user_id);
-    }
 
     /**
      * @return BelongsTo
@@ -101,8 +92,49 @@ class WeatherAlert extends Model
         return $this->belongsTo(Location::class, 'location_id');
     }
 
-    public function getFirstSetAlertValue(): int
+    /**
+     * Update last executed time and save the model.
+     *
+     * @return void
+     */
+    public function markAsExecuted(): void
     {
-        return $this->precipitation ?: $this->uv;
+        $this->executed_at = now();
+        $this->save();
+    }
+
+    /**
+     * Check if the weather alert matches the weather report.
+     *
+     * @param WeatherReport $weatherReport
+     * @return bool
+     */
+    public function matchesWeatherReport(WeatherReport $weatherReport): bool
+    {
+        if ($this->location->id !== $weatherReport->getLocation()->id) {
+            return false;
+        }
+
+        if ($this->metric === 'precipitation') {
+            if ($this->threshold > $weatherReport->getPrecipitation()) {
+                return false;
+            }
+        }
+
+        if ($this->metric === 'uv') {
+            if ($this->threshold > $weatherReport->getUv()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWebpush(): bool
+    {
+        return $this->channel === 'webpush';
     }
 }

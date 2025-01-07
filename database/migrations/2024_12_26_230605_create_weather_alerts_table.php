@@ -15,15 +15,17 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('location_id');
-            $table->enum('channel_type', ['email', 'webpush']);
-            $table->tinyInteger('precipitation')->unsigned();
-            $table->tinyInteger('uv')->unsigned();
-            $table->boolean('is_active')->default(true);
+            $table->enum('channel', ['email', 'webpush']);
+            $table->enum('metric', ['precipitation', 'uv']);
+            $table->tinyInteger('threshold')->unsigned();
+            $table->boolean('enabled')->default(true);
             $table->dateTime('executed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
+
+            $table->unique(['user_id', 'location_id', 'channel', 'metric', 'threshold'], 'weather_alerts_unique');
         });
     }
 

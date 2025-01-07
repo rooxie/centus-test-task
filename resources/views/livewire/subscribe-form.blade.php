@@ -27,8 +27,8 @@
             </label>
             <select
                 id="location"
-                wire:model="selected_location_id"
-                class="mt-1 block w-full border {{ $errors->has('selected_location_id') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2 bg-white"
+                wire:model="location_id"
+                class="mt-1 block w-full border {{ $errors->has('location_id') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2 bg-white"
             >
                 <option value="" selected>
                     {{ __('Select a location') }}
@@ -37,70 +37,68 @@
                     <option value="{{ $location->id }}">{{ $location->name }}</option>
                 @endforeach
             </select>
-            @error('selected_location_id')
+            @error('location_id')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
 
-        <!-- Notification Method Select Box -->
+        <!-- Notification Channel Select Box -->
         <div class="mb-4">
-            <label for="notification_method" class="block text-sm font-medium text-gray-700">
-                {{ __('Notification Method') }}
+            <label for="channel" class="block text-sm font-medium text-gray-700">
+                {{ __('Notification Channel') }}
             </label>
             <select
-                id="notification_method"
-                wire:model="notification_method"
-                class="mt-1 block w-full border {{ $errors->has('notification_method') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2 bg-white"
+                id="channel"
+                wire:model="channel"
+                class="mt-1 block w-full border {{ $errors->has('channel') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2 bg-white"
             >
-                <option value="email">
-                    {{ __('Email') }}
-                </option>
-                <option value="webpush">
-                    {{ __('Web Push') }}
-                </option>
+                <option value="email">{{ __('Email') }}</option>
+                <option value="webpush">{{ __('Web Push') }}</option>
             </select>
-            @error('notification_method')
+            @error('channel')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
 
-        <!-- Precipitation Integer Input -->
+        <!-- Metric Select Box -->
         <div class="mb-4">
-            <label for="precipitation" class="block text-sm font-medium text-gray-700">
-                {{ __('Precipitation') }}
+            <label for="metric" class="block text-sm font-medium text-gray-700">
+                {{ __('Metric') }}
             </label>
-            <input
-                type="number"
-                id="precipitation"
-                wire:model="precipitation"
-                class="mt-1 block w-full border {{ $errors->has('precipitation') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2"
-                min="0"
-                max="99"
+            <select
+                id="metric"
+                wire:model="metric"
+                class="mt-1 block w-full border {{ $errors->has('metric') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2 bg-white"
             >
-            <p class="text-sm text-gray-500">
-                {{ __('Value must be between 0 and 99') }}
-            </p>
-            @error('precipitation') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <option value="precipitation">{{ __('Precipitation') }}</option>
+                <option value="uv">{{ __('UV Index') }}</option>
+            </select>
+            @error('metric')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
-        <!-- UV Integer Input -->
+        <!-- Threshold Input -->
         <div class="mb-4">
-            <label for="uv" class="block text-sm font-medium text-gray-700">
-                {{ __('UV Index') }}
+            <label for="threshold" class="block text-sm font-medium text-gray-700">
+                {{ __('Threshold') }}
             </label>
             <input
                 type="number"
-                id="uv"
-                wire:model="uv"
-                class="mt-1 block w-full border {{ $errors->has('uv') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2"
-                min="0"
-                max="40"
+                id="threshold"
+                wire:model="threshold"
+                class="mt-1 block w-full border {{ $errors->has('threshold') ? 'border-red-500' : 'border-gray-300' }} rounded-md shadow-sm p-2"
+                min="1"
+                max="100"
             >
             <p class="text-sm text-gray-500">
-                {{ __('Value must be between 0 and 40') }}
+                {{ $metric === 'uv' ? __('Value must be between 1 and 40') : __('Value must be between 1 and 100') }}
             </p>
-            @error('uv') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('threshold')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
+
 
         <div>
             <x-button>

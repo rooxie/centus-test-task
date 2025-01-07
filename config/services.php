@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'fake_open_meteo_api' => [
+        'key' => env('FAKE_OPEN_METEO_API_KEY'),
+    ],
+
 ];

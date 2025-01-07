@@ -13,7 +13,7 @@
                 </div>
                 <hr class="m-4">
                 <div class="mt-8">
-                    @livewire('weather-alerts')
+                    @livewire('weather-alerts-table')
                 </div>
             </div>
         </div>

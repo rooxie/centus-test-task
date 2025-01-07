@@ -3,17 +3,15 @@
         <h2 style="color: #555;">Hello {{ $weatherAlert->user->name }},</h2>
 
         <p>
-            You've subscribed to receive a weather alert when the
-            <b>{{ $weatherAlert->precipitation > 0 ? 'precipitation' : 'UV index' }}</b>
-            in <b>{{ $weatherAlert->location->name }}</b> is more than or equal to
-            <b>{{ $weatherAlert->precipitation ?: $weatherAlert->uv }}</b>.
+            You've subscribed to receive a weather alert notification when <b>{{ strtoupper($weatherAlert->metric) }}</b>
+            in <b>{{ $weatherAlert->location->name }}</b> is more than or equal to <b>{{ $weatherAlert->threshold }}</b>.
         </p>
 
         <p style="margin-top: 20px;">
-            As of <b>{{ $weatherAlert->executed_at?->format('Y/m/d H:i:s') }}</b>, the current weather conditions are as follows:
+            As of <b>{{ $weatherAlert->executed_at?->format('Y/m/d H:i:s') }}</b>, the current weather conditions are:
         </p>
         <ul style="margin: 0; padding-left: 20px;">
-            <li style="margin-bottom: 10px;">Temperature: <b>{{ $weatherReport->getTemperature() }}*C</b></li>
+            <li style="margin-bottom: 10px;">Temperature: <b>{{ $weatherReport->getTemperature() }}&#176;C</b></li>
             <li style="margin-bottom: 10px;">Precipitation: <b>{{ $weatherReport->getPrecipitation() }}%</b></li>
             <li>UV Index: <b>{{ $weatherReport->getUv() }}</b></li>
         </ul>

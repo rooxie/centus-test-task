@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class WeatherAlerts extends Component
+class WeatherAlertsTable extends Component
 {
     use WithPagination;
 
@@ -39,6 +39,21 @@ class WeatherAlerts extends Component
     }
 
     /**
+     * Toggle the "enabled" status of a weather alert.
+     *
+     * @param int $id
+     * @return void
+     */
+    public function toggleEnabled(int $id): void
+    {
+        $weatherAlert = WeatherAlert::findOrFail($id);
+        $weatherAlert->enabled = !$weatherAlert->enabled;
+        $weatherAlert->save();
+
+        session()->flash('message', 'Alert status updated successfully.');
+    }
+
+    /**
      * @return View
      */
     public function render(): View
@@ -48,6 +63,6 @@ class WeatherAlerts extends Component
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
 
-        return view('livewire.weather-alerts', ['weatherAlerts' => $weatherAlerts]);
+        return view('livewire.weather-alerts-table', ['weatherAlerts' => $weatherAlerts]);
     }
 }

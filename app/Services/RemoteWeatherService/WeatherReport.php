@@ -1,31 +1,29 @@
 <?php
 
-namespace App\Services\WeatherService;
+namespace App\Services\RemoteWeatherService;
 
+use App\Models\Location;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
 class WeatherReport
 {
     /**
-     * @var Carbon
-     */
-    protected Carbon $time;
-
-    /**
-     * @param string $location
+     * @param Carbon $time
+     * @param Location $location
      * @param float $temperature
      * @param int $precipitation
      * @param int $uv
      */
     public function __construct(
-        protected string $location,
+        protected Carbon $time,
+        protected Location $location,
         protected float $temperature,
         protected int $precipitation,
         protected int $uv
     ) {
-        if (trim($this->location) === '') {
-            throw new InvalidArgumentException('Location cannot be empty');
+        if (!$this->location->id) {
+            throw new InvalidArgumentException('Location must have an ID');
         }
 
         if ($this->precipitation < 0 || $this->precipitation > 100) {
@@ -35,8 +33,6 @@ class WeatherReport
         if ($this->uv < 0 || $this->uv > 100) {
             throw new InvalidArgumentException('UV must be between 0 and 100');
         }
-
-        $this->time = Carbon::now();
     }
 
     /**
@@ -48,9 +44,9 @@ class WeatherReport
     }
 
     /**
-     * @return string
+     * @return Location
      */
-    public function getLocation(): string
+    public function getLocation(): Location
     {
         return $this->location;
     }
